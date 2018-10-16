@@ -7,10 +7,9 @@ public class Principal {
 
     private JPanel painelPrincipal;
     private JPanel Placar;
+    private JLabel jogadorVez;
     private JPanel botao8;
     private JPanel botao9;
-    private JButton novoJogoButton;
-    private JLabel jogadorVez;
     private JLabel adicionaNome;
     private JLabel botao00;
     private JLabel botao01;
@@ -25,17 +24,24 @@ public class Principal {
     private JTextField textField2;
     private JLabel pontuacaoJogador1;
     private JLabel pontuacaoJogador2;
-    private boolean jogador = false;
+    private JButton reiniciarPartidaButton;
+    private int jogador = 1;
+    jogoDaVelha jogo;
 
     public Principal() {
+        jogo = new jogoDaVelha();
+
+
         botao00.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println("Cliquei no botao 00");
-                atualizaJogador();
-                atualizarPlacarJogador1();
-                atualizarTabuleioro();
+                if(jogo.jogar(0,   0,jogador)==true) {
+                    atualizarTabuleiro();
+                } else{
+                    //TODO criar uma janela de aviso
+                }
             }
         });
 
@@ -44,8 +50,11 @@ public class Principal {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println("Cliquei no botao 01");
-                atualizaJogador();
-                atualizarPlacarJogador2();
+                if(jogo.jogar(0,   1,jogador)==true) {
+                    atualizarTabuleiro();
+                } else{
+                    //TODO criar uma janela de aviso
+                }
             }
         });
 
@@ -54,7 +63,11 @@ public class Principal {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println("Cliquei no botao 02");
-                atualizaJogador();
+                if( jogo.jogar(0,   2,jogador)==true) {
+                    atualizarTabuleiro();
+                } else{
+                    //TODO criar uma janela de aviso
+                }
             }
         });
 
@@ -63,7 +76,12 @@ public class Principal {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println("Cliquei no botao 10");
-                atualizaJogador();
+                if(jogo.jogar(1,   0,jogador)==true) {
+                    atualizarTabuleiro();
+                } else{
+                    //TODO criar uma janela de aviso
+                }
+
             }
         });
 
@@ -72,7 +90,11 @@ public class Principal {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println("Cliquei no botao 11");
-                atualizaJogador();
+                if( jogo.jogar(1,   1,jogador)==true) {
+                    atualizarTabuleiro();
+                } else{
+                    //TODO criar uma janela de aviso
+                }
             }
         });
 
@@ -81,7 +103,11 @@ public class Principal {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println("Cliquei no botao 12");
-                atualizaJogador();
+                if(jogo.jogar(1,   2,jogador)==true) {
+                    atualizarTabuleiro();
+                } else{
+                    //TODO criar uma janela de aviso
+                }
             }
         });
 
@@ -90,7 +116,11 @@ public class Principal {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println("Cliquei no botao 20");
-                atualizaJogador();
+                if(jogo.jogar(2,   0,jogador)==true) {
+                    atualizarTabuleiro();
+                } else{
+                    //TODO criar uma janela de aviso
+                }
             }
         });
 
@@ -99,7 +129,12 @@ public class Principal {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println("Cliquei no botao 21");
-                atualizaJogador();
+
+                if(jogo.jogar(2,   1,jogador)==true) {
+                    atualizarTabuleiro();
+                } else{
+                    //TODO criar uma janela de aviso
+                }
             }
         });
 
@@ -108,18 +143,33 @@ public class Principal {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println("Cliquei no botao 22");
-                atualizaJogador();
+                if(jogo.jogar(2,   2,jogador)==true) {
+                    atualizarTabuleiro();
+                } else{
+                    //TODO criar uma janela de aviso
+                }
+            }
+        });
+
+        reiniciarPartidaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jogo.reinicia();
+
+                atualizarTabuleiro();
             }
         });
     }
 
     public void atualizaJogador(){
-        if(jogador) {
+
+        if(jogador == 1) {
             jogadorVez.setText("Jogador1");
+            jogador = 0;
         } else {
             jogadorVez.setText("Jogador2");
+            jogador = 1;
         }
-        jogador =!jogador;
     }
 
     public void atualizarPlacarJogador1(){
@@ -137,9 +187,42 @@ public class Principal {
 
     }
 
-    public void atualizarTabuleioro(){
-        botao00.setText("X");
+    public void verificaGanhador(){
+        if(jogo.limiteJogadas()){
+            System.out.println("deu velha");
+            //TODO janela pra avisar que deu velha
+            return;
+        }
+
+        if(jogo.ganhou()){
+            System.out.println("ganhou" + jogador);
+            //TODO janela pra avisar que ganhou
+            if(jogo.getNumeroJogador()==1){
+                atualizarPlacarJogador1();
+            } else{
+                atualizarPlacarJogador2();
+            }
+            return;
+        }
+        atualizaJogador();
+
     }
+
+
+    public void atualizarTabuleiro(){
+
+        botao00.setText(String.valueOf(jogo.matrizPosicao(0,0)));
+        botao01.setText(String.valueOf(jogo.matrizPosicao(0,1)));
+        botao02.setText(String.valueOf(jogo.matrizPosicao(0,2)));
+        botao10.setText(String.valueOf(jogo.matrizPosicao(1,0)));
+        botao11.setText(String.valueOf(jogo.matrizPosicao(1,1)));
+        botao12.setText(String.valueOf(jogo.matrizPosicao(1,2)));
+        botao20.setText(String.valueOf(jogo.matrizPosicao(2,0)));
+        botao21.setText(String.valueOf(jogo.matrizPosicao(2,1)));
+        botao22.setText(String.valueOf(jogo.matrizPosicao(2,2)));
+        verificaGanhador();
+    }
+
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Principal");
