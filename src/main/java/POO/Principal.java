@@ -25,12 +25,15 @@ public class Principal {
     private JLabel pontuacaoJogador1;
     private JLabel pontuacaoJogador2;
     private JButton reiniciarPartidaButton;
+    private JButton pessoaContraComputadorButton;
     private int jogador = 1;
-    jogoDaVelha jogo;
+    JogoDaVelha jogo;
+    int tipoPartida = 0;
+    Computador computador;
 
     public Principal() {
-        jogo = new jogoDaVelha();
-
+        jogo = new JogoDaVelha();
+        computador = new Computador();
 
         botao00.addMouseListener(new MouseAdapter() {
             @Override
@@ -155,22 +158,42 @@ public class Principal {
             @Override
             public void actionPerformed(ActionEvent e) {
                 jogo.reinicia();
-
+                tipoPartida = 0;
+                teste =false;
                 atualizarTabuleiro();
             }
         });
+        pessoaContraComputadorButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tipoPartida = 1;
+
+            }
+        });
     }
-
+    boolean teste = true;
     public void atualizaJogador(){
-
-        if(jogador == 1) {
+        teste = !teste;
+        if(teste == true) {
             jogadorVez.setText("Jogador1");
-            jogador = 0;
+
+            jogador = 1;
         } else {
             jogadorVez.setText("Jogador2");
-            jogador = 1;
+            jogador = 0;
+            if(tipoPartida == 1) {
+                Coordenadas posicaoJogadaComputador = computador.Jogar(jogo.getMatriz());
+                int x = posicaoJogadaComputador.x;
+                int y = posicaoJogadaComputador.y;
+                jogo.jogar(x, y, 2);
+                atualizarTabuleiro();
+            }
+
+
         }
+
     }
+
 
     public void atualizarPlacarJogador1(){
         String pontuacao1 =  pontuacaoJogador1.getText();

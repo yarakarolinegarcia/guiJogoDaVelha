@@ -1,6 +1,6 @@
 package POO;
 
-public class jogoDaVelha {
+public class JogoDaVelha {
     public char[][] getMatriz() {
         return matriz;
     }
@@ -16,7 +16,7 @@ public class jogoDaVelha {
     }
 
     private int numeroJogador;
-    public jogoDaVelha() {
+    public JogoDaVelha() {
 
     }
 
@@ -66,7 +66,7 @@ public class jogoDaVelha {
 
     private boolean verificaVertical() {
 
-        if (matriz[0][0] == caracter && matriz[0][1] == caracter && matriz[0][1] == caracter) {
+        if (matriz[0][0] == caracter && matriz[0][1] == caracter && matriz[0][2] == caracter) {
             return true;
 
         } else if (matriz[1][0] == caracter && matriz[1][1] == caracter && matriz[1][2] == caracter) {
