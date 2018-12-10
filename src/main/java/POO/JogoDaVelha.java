@@ -1,137 +1,165 @@
 package POO;
 
 public class JogoDaVelha {
-    public char[][] getMatriz() {
-        return matriz;
-    }
-    public char matrizPosicao(int x, int y){
-        return matriz[x][y];
-    }
-    private char[][] matriz= {{' ',' ',' '},{' ',' ',' '},{' ',' ',' '}};
-    private char caracter = 'X';
-    private int numeroJogadas = 0;
 
-    public int getNumeroJogador() {
-        return numeroJogador;
+    public int[][] getMatriz() {
+        return tabuleiro;
     }
 
-    private int numeroJogador;
+    public int matrizPosicao(int x, int y){
+        return tabuleiro[x][y];
+    }
+
+    private int[][] tabuleiro;
+    private int placarJogador1;
+    private int placarJogador2;
+
+    public boolean isJogadorDaVez() {
+        return jogadorDaVez;
+    }
+
+    /**
+     * Quando true, representa jogador 1, que possui o marcador X
+     */
+    private boolean jogadorDaVez;
+
+
     public JogoDaVelha() {
-
+        this.tabuleiro = new int[3][3];
+        this.iniciarTabuleiro();
+        this.placarJogador1 = 0;
+        this.placarJogador2 = 0;
+        this.jogadorDaVez = true;
     }
 
-    private boolean validaJogada(int x, int y){
-        if(matriz[x][y] == ' '){
-            return true;
-        } else {
-            return false;
-        }
-    }
-    public void reinicia(){
-        for(int  linha = 0; linha < 3;linha++){
-            for (int coluna =0; coluna < 3; coluna++){
-                matriz[linha][coluna] = ' ';
+    public void iniciarTabuleiro(){
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                this.tabuleiro[i][j] = 0;
             }
         }
-        numeroJogadas = 0;
-
     }
 
-    public boolean jogar(int x, int y, int numeroJogador) {
-        numeroJogadas++;
-        this.numeroJogador = numeroJogador;
-        if (!validaJogada(x,y)) {
-            System.out.println("Jogada invalida, posição já ocupada");
+    public boolean jogar(int linha, int coluna){
+
+        if(linha > 2 || linha < 0){
+            return false;
+        }
+        if(coluna > 2 || coluna < 0){
             return false;
         }
 
-        if(numeroJogador == 1){
-            caracter='X';
-        } else {
-            caracter ='O';
+        if(this.tabuleiro[linha][coluna] != 0){
+            return false;
         }
-        matriz[x][y] = caracter;
 
+        if(jogadorDaVez){
+            this.tabuleiro[linha][coluna] = 1;
+        } else{
+            this.tabuleiro[linha][coluna] = -1;
+        }
+        this.jogadorDaVez = !this.jogadorDaVez;
+        return true;
+    }
+
+    public boolean tabuleiroCheio(){
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if(this.tabuleiro[i][j] == 0)
+                    return false;
+            }
+        }
 
         return true;
     }
 
-    public boolean limiteJogadas() {
-        if(numeroJogadas < 9){
-            return false;
-        } else {
-            return true;
+    public int ganhouHorizontal() {
+        for (int i = 0; i < 3; i++) {
+            int soma = 0;
+            for (int j = 0; j < 3; j++) {
+                soma = (this.tabuleiro[i][j]) + soma;
+            }
+            if (soma == 3){
+                return soma;
+            }
+            else if(soma == -3){
+                return soma;
+            }
         }
+        return 0;
     }
 
-    private boolean verificaVertical() {
-
-        if (matriz[0][0] == caracter && matriz[0][1] == caracter && matriz[0][2] == caracter) {
-            return true;
-
-        } else if (matriz[1][0] == caracter && matriz[1][1] == caracter && matriz[1][2] == caracter) {
-
-            return true;
-
-        } else if (matriz[2][0] == caracter && matriz[2][1] == caracter && matriz[2][2] == caracter) {
-            return true;
-        } else {
-            return false;
+    public int ganhouVertical(){
+        for (int j = 0; j< 3; j++) {
+            int soma = 0;
+            for (int i = 0; i < 3; i++) {
+                soma = (this.tabuleiro[i][j]) + soma;
+            }
+            if (soma == 3){
+                return soma;
+            }
+            else if(soma == -3){
+                return soma;
+            }
         }
+        return 0;
     }
 
+    public int ganhouDiagonal(){
+        int soma;
 
+        soma = tabuleiro[0][0]+  tabuleiro[1][1]+ tabuleiro[2][2];
 
-    private boolean vefificaHorizontal() {
-        if (matriz[0][0] == caracter && matriz[1][0] == caracter && matriz[2][0] == caracter) {
-            return true;
-
-        } else if (matriz[0][1] == caracter && matriz[1][1] == caracter && matriz[2][1] == caracter) {
-
-            return true;
-
-        } else if (matriz[0][2] == caracter && matriz[1][2] == caracter && matriz[2][2] == caracter) {
-
-            return true;
-        } else {
-            return false;
+        if (soma == 3){
+            return soma;
+        }
+        else if(soma == -3){
+            return soma;
         }
 
-    }
+        soma = tabuleiro[0][2]+  tabuleiro[1][1]+ tabuleiro[2][0];
 
-    private boolean verificaDiagonal() {
-        if (matriz[0][0] == caracter && matriz[1][1] == caracter && matriz[2][2] == caracter) {
-
-            return true;
-        } else if (matriz[0][2] == caracter && matriz[1][1] == caracter && matriz[2][0] == caracter) {
-
-            return true;
-        } else {
-            return false;
+        if (soma == 3){
+            return soma;
         }
-    }
-
-    public boolean ganhou(){
-        if(vefificaHorizontal() || verificaDiagonal() || verificaVertical()) {
-            return true;
-        } else {
-            return false;
+        else if(soma == -3){
+            return soma;
         }
+
+        return 0;
     }
 
-    public void imprimeJogoDaVelha(){
-        limparTelaTerminalVT100();
-        System.out.println( matriz[0][0]+ "  \u2502 "+matriz[0][1] + " \u2502 " +matriz [0][2]);
-        System.out.println("\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u253c\u2500\u2500\u2500");
-        System.out.println( matriz[1][0]+"  \u2502 "+matriz[1][1] + " \u2502 " +matriz [1][2]);
-        System.out.println("\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u253c\u2500\u2500\u2500");
-        System.out.println(matriz[2][0]+"  \u2502 "+matriz[2][1] + " \u2502 "+matriz [2][2]);
+    /**
+     *
+     * @return 0 quando ninguém ganha, 3 quando jogador 1 ganha, -3 quando jogador 2
+     */
+    public int ganhou(){
+        if(ganhouHorizontal()==3 || ganhouVertical()==3 || ganhouDiagonal()==3){
+            placarJogador1++;
+            return 3;
+        }
+        else if(ganhouHorizontal()==-3 || ganhouVertical()==-3 || ganhouDiagonal()==-3){
+            placarJogador2++;
+            return -3;
+        }
+        else return 0;
     }
 
-    private void limparTelaTerminalVT100(){
-        System.out.print("\033[H\033[2J");
-        System.out.println("\n");
-
-        System.out.flush();
+    public int[][] getTabuleiro() {
+        return tabuleiro;
     }
+
+    public int getPlacarJogador1() {
+        return placarJogador1;
+    }
+
+    public int getPlacarJogador2() {
+        return placarJogador2;
+    }
+
+    public void setTabuleiro(int[][] tabuleiro) {
+        this.tabuleiro = tabuleiro;
+    }
+
 }

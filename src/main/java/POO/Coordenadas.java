@@ -6,4 +6,12 @@ public class Coordenadas {
     int y;
 
 
+    public Coordenadas(int i, int j) {
+        this.x = i;
+        this.y = j;
+    }
+
+    public Coordenadas() {
+
+    }
 }

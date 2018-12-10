@@ -1,5 +1,5 @@
 package POO;
 
 public interface InterfaceComputador {
-    Coordenadas Jogar(char matriz[][]);
+    Coordenadas Jogar(int tabuleiro[][]);
 }

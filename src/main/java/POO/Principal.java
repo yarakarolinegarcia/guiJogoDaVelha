@@ -8,8 +8,6 @@ public class Principal {
     private JPanel painelPrincipal;
     private JPanel Placar;
     private JLabel jogadorVez;
-    private JPanel botao8;
-    private JPanel botao9;
     private JLabel adicionaNome;
     private JLabel botao00;
     private JLabel botao01;
@@ -26,9 +24,9 @@ public class Principal {
     private JLabel pontuacaoJogador2;
     private JButton reiniciarPartidaButton;
     private JButton pessoaContraComputadorButton;
-    private int jogador = 1;
+    private JPanel JPanel;
     JogoDaVelha jogo;
-    int tipoPartida = 0;
+    int tipoPartida = 1;
     Computador computador;
 
     public Principal() {
@@ -40,7 +38,7 @@ public class Principal {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println("Cliquei no botao 00");
-                if(jogo.jogar(0,   0,jogador)==true) {
+                if(jogo.jogar(0,   0)==true) {
                     atualizarTabuleiro();
                 } else{
                     //TODO criar uma janela de aviso
@@ -53,7 +51,7 @@ public class Principal {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println("Cliquei no botao 01");
-                if(jogo.jogar(0,   1,jogador)==true) {
+                if(jogo.jogar(0,   1)==true) {
                     atualizarTabuleiro();
                 } else{
                     //TODO criar uma janela de aviso
@@ -66,7 +64,7 @@ public class Principal {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println("Cliquei no botao 02");
-                if( jogo.jogar(0,   2,jogador)==true) {
+                if( jogo.jogar(0,   2)==true) {
                     atualizarTabuleiro();
                 } else{
                     //TODO criar uma janela de aviso
@@ -79,7 +77,7 @@ public class Principal {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println("Cliquei no botao 10");
-                if(jogo.jogar(1,   0,jogador)==true) {
+                if(jogo.jogar(1,   0)==true) {
                     atualizarTabuleiro();
                 } else{
                     //TODO criar uma janela de aviso
@@ -93,7 +91,7 @@ public class Principal {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println("Cliquei no botao 11");
-                if( jogo.jogar(1,   1,jogador)==true) {
+                if( jogo.jogar(1,   1)==true) {
                     atualizarTabuleiro();
                 } else{
                     //TODO criar uma janela de aviso
@@ -106,7 +104,7 @@ public class Principal {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println("Cliquei no botao 12");
-                if(jogo.jogar(1,   2,jogador)==true) {
+                if(jogo.jogar(1,   2)==true) {
                     atualizarTabuleiro();
                 } else{
                     //TODO criar uma janela de aviso
@@ -119,7 +117,7 @@ public class Principal {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println("Cliquei no botao 20");
-                if(jogo.jogar(2,   0,jogador)==true) {
+                if(jogo.jogar(2,   0)==true) {
                     atualizarTabuleiro();
                 } else{
                     //TODO criar uma janela de aviso
@@ -133,7 +131,7 @@ public class Principal {
                 super.mouseClicked(e);
                 System.out.println("Cliquei no botao 21");
 
-                if(jogo.jogar(2,   1,jogador)==true) {
+                if(jogo.jogar(2,   1)==true) {
                     atualizarTabuleiro();
                 } else{
                     //TODO criar uma janela de aviso
@@ -146,7 +144,7 @@ public class Principal {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println("Cliquei no botao 22");
-                if(jogo.jogar(2,   2,jogador)==true) {
+                if(jogo.jogar(2,   2)==true) {
                     atualizarTabuleiro();
                 } else{
                     //TODO criar uma janela de aviso
@@ -157,12 +155,11 @@ public class Principal {
         reiniciarPartidaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                jogo.reinicia();
-                tipoPartida = 0;
-                teste =false;
+                jogo.iniciarTabuleiro();
                 atualizarTabuleiro();
             }
         });
+
         pessoaContraComputadorButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -171,79 +168,108 @@ public class Principal {
             }
         });
     }
-    boolean teste = true;
-    public void atualizaJogador(){
-        teste = !teste;
-        if(teste == true) {
-            jogadorVez.setText("Jogador1");
-
-            jogador = 1;
-        } else {
-            jogadorVez.setText("Jogador2");
-            jogador = 0;
-            if(tipoPartida == 1) {
-                Coordenadas posicaoJogadaComputador = computador.Jogar(jogo.getMatriz());
-                int x = posicaoJogadaComputador.x;
-                int y = posicaoJogadaComputador.y;
-                jogo.jogar(x, y, 2);
-                atualizarTabuleiro();
-            }
-
-
-        }
-
-    }
-
 
     public void atualizarPlacarJogador1(){
-        String pontuacao1 =  pontuacaoJogador1.getText();
-        int p1 = Integer.parseInt(pontuacao1);
-        p1++;
-        pontuacaoJogador1.setText(String.valueOf(p1));
+        pontuacaoJogador1.setText(String.valueOf(jogo.getPlacarJogador1()));
     }
 
     public void atualizarPlacarJogador2(){
-        String pontuacao2 =  pontuacaoJogador2.getText();
-        int p2 = Integer.parseInt(pontuacao2);
-        p2++;
-        pontuacaoJogador2.setText(String.valueOf(p2));
+        pontuacaoJogador2.setText(String.valueOf(jogo.getPlacarJogador2()));
+    }
 
+
+
+
+    public void atualizarTabuleiro(){
+
+        if(jogo.matrizPosicao(0,0) ==1)
+            botao00.setText("X");
+        else  if(jogo.matrizPosicao(0,0) ==-1)
+            botao00.setText("O");
+        else  botao00.setText("");
+
+        if(jogo.matrizPosicao(0,1) ==1)
+            botao01.setText("X");
+        else  if(jogo.matrizPosicao(0,1) ==-1)
+            botao01.setText("O");
+        else  botao01.setText("");
+
+        if(jogo.matrizPosicao(0,2) ==1)
+            botao02.setText("X");
+        else  if(jogo.matrizPosicao(0,2) ==-1)
+            botao02.setText("O");
+        else  botao02.setText("");
+
+        if(jogo.matrizPosicao(1,0) ==1)
+            botao10.setText("X");
+        else  if(jogo.matrizPosicao(1,0) ==-1)
+            botao10.setText("O");
+        else  botao10.setText("");
+
+        if(jogo.matrizPosicao(1,1) ==1)
+            botao11.setText("X");
+        else  if(jogo.matrizPosicao(1,1) ==-1)
+            botao11.setText("O");
+        else  botao11.setText("");
+
+        if(jogo.matrizPosicao(1,2) ==1)
+            botao12.setText("X");
+        else  if(jogo.matrizPosicao(1,2) ==-1)
+            botao12.setText("O");
+        else  botao12.setText("");
+
+        if(jogo.matrizPosicao(2,0) ==1)
+            botao20.setText("X");
+        else  if(jogo.matrizPosicao(2,0) ==-1)
+            botao20.setText("O");
+        else  botao20.setText("");
+
+        if(jogo.matrizPosicao(2,1) ==1)
+            botao21.setText("X");
+        else  if(jogo.matrizPosicao(2,1) ==-1)
+            botao21.setText("O");
+        else  botao21.setText("");
+
+        if(jogo.matrizPosicao(2,2) ==1)
+            botao22.setText("X");
+        else  if(jogo.matrizPosicao(2,2) ==-1)
+            botao22.setText("O");
+        else  botao22.setText("");
+
+        verificaGanhador();
     }
 
     public void verificaGanhador(){
-        if(jogo.limiteJogadas()){
+
+        if(jogo.tabuleiroCheio()){
             System.out.println("deu velha");
             //TODO janela pra avisar que deu velha
             return;
         }
 
-        if(jogo.ganhou()){
-            System.out.println("ganhou" + jogador);
-            //TODO janela pra avisar que ganhou
-            if(jogo.getNumeroJogador()==1){
-                atualizarPlacarJogador1();
-            } else{
-                atualizarPlacarJogador2();
-            }
-            return;
-        }
-        atualizaJogador();
+        jogo.ganhou();
 
+        atualizarPlacarJogador2();
+
+        atualizaJogador();
     }
 
+    private void atualizaJogador() {
+        if(jogo.isJogadorDaVez()) {
+            jogadorVez.setText("Jogador1");
 
-    public void atualizarTabuleiro(){
+        } else {
+            jogadorVez.setText("Jogador2");
 
-        botao00.setText(String.valueOf(jogo.matrizPosicao(0,0)));
-        botao01.setText(String.valueOf(jogo.matrizPosicao(0,1)));
-        botao02.setText(String.valueOf(jogo.matrizPosicao(0,2)));
-        botao10.setText(String.valueOf(jogo.matrizPosicao(1,0)));
-        botao11.setText(String.valueOf(jogo.matrizPosicao(1,1)));
-        botao12.setText(String.valueOf(jogo.matrizPosicao(1,2)));
-        botao20.setText(String.valueOf(jogo.matrizPosicao(2,0)));
-        botao21.setText(String.valueOf(jogo.matrizPosicao(2,1)));
-        botao22.setText(String.valueOf(jogo.matrizPosicao(2,2)));
-        verificaGanhador();
+            if(tipoPartida == 1) {
+                Coordenadas posicaoJogadaComputador = computador.Jogar(jogo.getMatriz());
+                int x = posicaoJogadaComputador.x;
+                int y = posicaoJogadaComputador.y;
+                jogo.jogar(x, y);
+                atualizarTabuleiro();
+            }
+
+        }
     }
 
 
@@ -260,4 +286,8 @@ public class Principal {
 
         frame.setVisible(true);
     }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
+}
